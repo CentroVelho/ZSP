@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundação ZSP // Arquivo Público</title>
+    <style>
+        :root { --border: #000; --bg: #fff; --text: #000; }
+        body { font-family: 'Georgia', serif; background-color: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+
+        /* Layout */
+        #container { display: flex; flex-direction: row; min-height: 100vh; }
+        nav { width: 250px; border-right: 1px solid var(--border); padding: 40px 20px; flex-shrink: 0; }
+        main { flex-grow: 1; padding: 40px; }
+
+        /* Mobile */
+        .menu-btn { display: none; font-size: 24px; cursor: pointer; }
+        @media (max-width: 768px) {
+            #container { flex-direction: column; }
+            nav { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 15px; }
+            .nav-menu { display: none; }
+            .menu-btn { display: block; }
+        }
+
+        /* Pesquisa */
+        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #000; font-family: 'Georgia', serif; box-sizing: border-box; }
+
+        .doc-item { padding: 15px 0; border-bottom: 1px solid #eee; cursor: pointer; }
+        .document-area { white-space: pre-wrap; margin-top: 20px; border-top: 1px solid #000; padding-top: 20px; }
+        h1 { font-family: 'Arial', sans-serif; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <nav>
+        <nav>
+
+    <div style="text-align:center;">
+
+        <img src="Fundação ZSP.png"
+             alt="Fundação ZSP"
+             style="
+                width:140px;
+                max-width:80%;
+                height:auto;
+                display:block;
+                margin:0 auto 15px auto;
+             ">
+
+        <h2 style="
+            margin:0;
+            font-size:1.2rem;
+            font-family:Arial, sans-serif;
+            text-transform:uppercase;
+            letter-spacing:2px;
+        ">
+            FUNDAÇÃO ZSP
+        </h2>
+
+        <div style="
+            border-bottom:2px solid #000;
+            margin:15px 0 20px 0;
+        "></div>
+
+    </div>
+
+    <div style="
+        display:flex;
+        justify-content:flex-end;
+        margin-bottom:10px;
+    ">
+        <span class="menu-btn"
+              onclick="toggleMenu()"
+              style="
+                font-size:24px;
+                cursor:pointer;
+                user-select:none;
+              ">
+            ☰
+        </span>
+    </div>
+
+    <div id="nav-menu" class="nav-menu">
+
+        <a href="#"
+           onclick="loadHome()"
+           style="
+                display:block;
+                padding:12px 0;
+                color:#000;
+                text-decoration:none;
+                border-bottom:1px solid #ddd;
+           ">
+            Início
+        </a>
+
+        <a href="#"
+           onclick="loadArchive()"
+           style="
+                display:block;
+                padding:12px 0;
+                color:#000;
+                text-decoration:none;
+                border-bottom:1px solid #ddd;
+           ">
+            Arquivos ZSP
+        </a>
+
+    </div>
+
+</nav>
+    </nav>
+
+    <main id="main-content"></main>
+</div>
+
+<script>
+    const zspDatabase = [
+        { id: "ZSP-001", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido", doc: "PROCEDIMENTOS ESPECIAIS DE CONTENÇÃO\n" +
+                "\n" +
+                "ZSP-001 encontra-se atualmente contido na Câmara Euclid-01 da Instalação ZSP-Prime. A câmara possui formato cilíndrico com 20 metros de diâmetro e 12 metros de altura.\n" +
+                "\n" +
+                "O ambiente deve permanecer permanentemente iluminado por refletores industriais capazes de manter níveis mínimos de 5.000 lux em toda a área de contenção. Sensores fotométricos monitoram continuamente a instalação e enviam alertas automáticos caso qualquer região da cela apresente níveis inferiores ao limite estabelecido.\n" +
+                "\n" +
+                "Objetos capazes de criar sombras extensas são proibidos dentro da câmara. Equipamentos de manutenção devem possuir iluminação própria e permanecer ativos durante toda a permanência no local.\n" +
+                "\n" +
+                "Em caso de falha elétrica, geradores de emergência devem restaurar a iluminação em até três segundos. Caso esse limite seja ultrapassado, o Protocolo Eclipse deve ser imediatamente iniciado e todas as equipes de segurança do Setor Euclid devem entrar em estado de prontidão máxima.\n" +
+                "\n" +
+                "O acesso à contenção exige autorização de Nível 3 ou superior.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "DESCRIÇÃO\n" +
+                "\n" +
+                "ZSP-001 é uma entidade humanoide composta por uma substância negra desconhecida. A aparência geral lembra a silhueta de um homem extremamente alto e magro, medindo aproximadamente 2,7 metros de altura.\n" +
+                "\n" +
+                "Apesar dessa forma aparentemente fixa, observações prolongadas demonstram que seu corpo permanece em constante alteração. Partes da entidade frequentemente se dissolvem em uma fumaça escura antes de retornarem ao formato original.\n" +
+                "\n" +
+                "A entidade não apresenta olhos, nariz, boca ou qualquer característica facial identificável. Mesmo assim, demonstra percepção completa do ambiente ao seu redor.\n" +
+                "\n" +
+                "Testes realizados pela Fundação indicam que ZSP-001 não é composto por matéria convencional. Amostras coletadas de seu corpo desaparecem poucos segundos após serem removidas, transformando-se em pequenas partículas negras que se dissipam no ar.\n" +
+                "\n" +
+                "A principal característica anômala da entidade é sua capacidade de manipular sombras. ZSP-001 pode alterar o formato, o tamanho e a densidade de qualquer sombra existente dentro de sua área de influência.\n" +
+                "\n" +
+                "Durante experimentos controlados, a entidade transformou sombras comuns em estruturas sólidas capazes de sustentar peso, cortar materiais metálicos e aprisionar indivíduos adultos.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "DESCOBERTA\n" +
+                "\n" +
+                "O primeiro registro relacionado a ZSP-001 ocorreu em 17 de março de 1998.\n" +
+                "\n" +
+                "Moradores de uma região industrial abandonada começaram a relatar fenômenos incomuns durante o período noturno. Entre os relatos estavam desaparecimentos misteriosos, movimentação de sombras sem fonte de luz correspondente e figuras humanoides observadas dentro de prédios abandonados.\n" +
+                "\n" +
+                "Inicialmente os casos foram tratados como boatos locais.\n" +
+                "\n" +
+                "Entretanto, após o desaparecimento de onze pessoas em apenas duas semanas, autoridades regionais iniciaram investigações.\n" +
+                "\n" +
+                "As equipes encontraram diversos edifícios completamente vazios. Nenhum vestígio das vítimas foi localizado.\n" +
+                "\n" +
+                "A única evidência encontrada consistia em manchas negras espalhadas pelas paredes e pelo chão dos galpões abandonados.\n" +
+                "\n" +
+                "As manchas não correspondiam a nenhuma substância conhecida.\n" +
+                "\n" +
+                "Dias depois, câmeras de segurança instaladas temporariamente registraram uma figura humanoide emergindo da sombra de uma coluna de concreto.\n" +
+                "\n" +
+                "O vídeo mostrou a entidade observando o ambiente durante aproximadamente quarenta segundos antes de desaparecer novamente.\n" +
+                "\n" +
+                "Esse foi o primeiro registro visual oficial de ZSP-001.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "PRIMEIRO CONTATO\n" +
+                "\n" +
+                "Em 04 de abril de 1998, uma equipe de investigação foi enviada para explorar o galpão onde a entidade havia sido filmada.\n" +
+                "\n" +
+                "O grupo era composto por seis investigadores.\n" +
+                "\n" +
+                "A comunicação permaneceu normal durante os primeiros vinte minutos da operação.\n" +
+                "\n" +
+                "Às 23:17, os rádios começaram a registrar interferências desconhecidas.\n" +
+                "\n" +
+                "Poucos segundos depois, um dos agentes informou que as sombras do local estavam se movendo.\n" +
+                "\n" +
+                "As transmissões seguintes registraram gritos e pedidos de ajuda.\n" +
+                "\n" +
+                "Quando equipes de reforço chegaram ao local, apenas um sobrevivente foi encontrado.\n" +
+                "\n" +
+                "O investigador apresentava sinais severos de choque psicológico e repetia constantemente uma única frase:\n" +
+                "\n" +
+                "\"Ele costura as sombras.\"\n" +
+                "\n" +
+                "A frase tornou-se posteriormente a origem do nome atribuído à entidade.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "CAPTURA\n" +
+                "\n" +
+                "A captura de ZSP-001 foi considerada uma das operações mais difíceis já realizadas durante os primeiros anos da Fundação ZSP.\n" +
+                "\n" +
+                "Após meses de observação, pesquisadores descobriram que a entidade apresentava comportamento defensivo quando exposta a níveis extremos de iluminação.\n" +
+                "\n" +
+                "Com base nessa descoberta, foi criada a Operação Aurora.\n" +
+                "\n" +
+                "Mais de cento e cinquenta refletores industriais foram instalados secretamente ao redor do complexo industrial onde a entidade costumava se manifestar.\n" +
+                "\n" +
+                "Em 12 de setembro de 1998, ZSP-001 foi atraído para uma área previamente preparada.\n" +
+                "\n" +
+                "Às 02:43 da madrugada todos os refletores foram ativados simultaneamente.\n" +
+                "\n" +
+                "Pela primeira vez a entidade demonstrou sinais claros de enfraquecimento.\n" +
+                "\n" +
+                "Partes de seu corpo começaram a perder estabilidade e se desfazer em fumaça escura.\n" +
+                "\n" +
+                "Mesmo nessa condição, ZSP-001 conseguiu ferir gravemente oito agentes e destruir parte do equipamento utilizado na operação.\n" +
+                "\n" +
+                "Após quarenta e oito minutos de confronto, a entidade foi finalmente aprisionada em uma cápsula de transporte iluminada e transferida para a recém-construída Instalação ZSP-Prime.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "CAPACIDADES ANÔMALAS\n" +
+                "\n" +
+                "Manipulação de Sombras\n" +
+                "\n" +
+                "ZSP-001 pode controlar sombras naturais e artificiais dentro de um raio estimado de cinquenta metros.\n" +
+                "\n" +
+                "Construções Sombrias\n" +
+                "\n" +
+                "A entidade consegue transformar sombras em objetos sólidos, incluindo lâminas, correntes, paredes e estruturas complexas.\n" +
+                "\n" +
+                "Camuflagem\n" +
+                "\n" +
+                "Em ambientes escuros, torna-se extremamente difícil detectar sua presença.\n" +
+                "\n" +
+                "Movimentação Sombria\n" +
+                "\n" +
+                "A entidade é capaz de deslocar-se através de regiões escuras de maneira anormalmente rápida.\n" +
+                "\n" +
+                "Força Sobre-Humana\n" +
+                "\n" +
+                "Testes demonstraram força suficiente para romper aço reforçado e concreto armado.\n" +
+                "\n" +
+                "Resistência Elevada\n" +
+                "\n" +
+                "Armas convencionais apresentam eficácia limitada contra a entidade.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "COMPORTAMENTO\n" +
+                "\n" +
+                "ZSP-001 demonstra inteligência comparável ou superior à humana.\n" +
+                "\n" +
+                "A entidade raramente se comunica, porém parece compreender a linguagem utilizada pelos pesquisadores.\n" +
+                "\n" +
+                "Em diversas ocasiões foi observada analisando funcionários através do vidro de observação de sua cela.\n" +
+                "\n" +
+                "A entidade passa a maior parte do tempo imóvel.\n" +
+                "\n" +
+                "Entretanto, quando ocorre qualquer falha temporária na iluminação, demonstra comportamento imediatamente agressivo.\n" +
+                "\n" +
+                "Pesquisadores acreditam que ZSP-001 possui objetivos próprios, embora sua natureza exata permaneça desconhecida.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "INCIDENTE-001-A\n" +
+                "\n" +
+                "Em 2003, uma falha elétrica de sete segundos ocorreu durante uma tempestade.\n" +
+                "\n" +
+                "Durante esse período, todas as câmeras da contenção perderam sinal.\n" +
+                "\n" +
+                "Quando a energia foi restaurada, ZSP-001 encontrava-se exatamente na mesma posição registrada antes da interrupção.\n" +
+                "\n" +
+                "No entanto, palavras desconhecidas haviam sido escritas nas paredes da câmara utilizando uma substância negra semelhante à encontrada durante sua descoberta.\n" +
+                "\n" +
+                "As inscrições desapareceram espontaneamente após três horas.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "AVALIAÇÃO FINAL\n" +
+                "\n" +
+                "ZSP-001 representa uma ameaça significativa caso obtenha acesso a grandes áreas de escuridão.\n" +
+                "\n" +
+                "Embora atualmente permaneça contido com sucesso, pesquisadores alertam que uma falha prolongada nos sistemas de iluminação poderia resultar em uma quebra de contenção de grande escala.\n" +
+                "\n" +
+                "Por ser a primeira entidade oficialmente registrada pela Fundação ZSP, ZSP-001 permanece como um dos objetos de estudo mais importantes da organização.\n" +
+                "\n" +
+                "Monitoramento permanente é obrigatório." },
+        { id: "ZSP-002", name: "A Sombra Agressiva", class: "Keter", status: "Contido", doc: "PROCEDIMENTOS ESPECIAIS DE CONTENÇÃO\n" +
+                "\n" +
+                "ZSP-002 encontra-se contido na Câmara Keter-02 da Instalação ZSP-Prime. Devido às propriedades anômalas da entidade, a câmara foi construída para eliminar completamente qualquer área de escuridão.\n" +
+                "\n" +
+                "O ambiente possui formato circular com 30 metros de diâmetro e é equipado com um sistema de iluminação de emergência redundante composto por 612 refletores industriais. A intensidade luminosa mínima permitida é de 8.000 lux.\n" +
+                "\n" +
+                "O piso é formado por painéis translúcidos iluminados internamente. As paredes e o teto são revestidos com material reflexivo de alta intensidade para impedir a formação de sombras.\n" +
+                "\n" +
+                "A cada seis horas, sistemas automatizados realizam uma varredura completa em busca de falhas de iluminação.\n" +
+                "\n" +
+                "Nenhum funcionário está autorizado a entrar sozinho na área de contenção.\n" +
+                "\n" +
+                "Em caso de falha energética superior a três segundos, o Protocolo Noite Zero deve ser iniciado imediatamente.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "DESCRIÇÃO\n" +
+                "\n" +
+                "ZSP-002 é uma entidade humanoide composta por uma massa escura de origem desconhecida.\n" +
+                "\n" +
+                "Sua aparência lembra uma sombra humana tridimensional, porém análises indicam que a entidade possui volume físico real.\n" +
+                "\n" +
+                "Quando observada diretamente, sua forma apresenta aproximadamente 1,90 metros de altura. Entretanto, registros mostram que suas dimensões podem variar dependendo da quantidade de escuridão presente no ambiente.\n" +
+                "\n" +
+                "A entidade não possui rosto, olhos ou qualquer estrutura anatômica visível.\n" +
+                "\n" +
+                "Mesmo assim, demonstra plena capacidade de percepção e consciência.\n" +
+                "\n" +
+                "Ao contrário de ZSP-001, que normalmente permanece observando seu ambiente, ZSP-002 demonstra comportamento imediatamente agressivo diante da maioria das formas de vida.\n" +
+                "\n" +
+                "Sua principal característica é a capacidade de utilizar sombras como meio de movimentação, ocultação e ataque.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "ORIGEM\n" +
+                "\n" +
+                "A origem de ZSP-002 começou em 2007 na cidade de ███████.\n" +
+                "\n" +
+                "O caso teve início quando moradores locais começaram a relatar acontecimentos estranhos em um parque municipal localizado próximo a uma área de mata fechada.\n" +
+                "\n" +
+                "Segundo testemunhas, uma região específica do parque apresentava escuridão anormal durante a noite.\n" +
+                "\n" +
+                "Mesmo sob iluminação pública, o local parecia absorver a luz ao redor.\n" +
+                "\n" +
+                "Inicialmente os relatos foram ignorados.\n" +
+                "\n" +
+                "Entretanto, diversos desaparecimentos passaram a ocorrer na área.\n" +
+                "\n" +
+                "As vítimas desapareciam sem deixar rastros.\n" +
+                "\n" +
+                "Nenhum corpo era encontrado.\n" +
+                "\n" +
+                "Nenhuma evidência física era recuperada.\n" +
+                "\n" +
+                "A situação mudou quando um adolescente identificado como Marcelo Vieira sobreviveu a um encontro com a anomalia.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "PRIMEIRO CONTATO\n" +
+                "\n" +
+                "Na noite de 18 de agosto de 2007, Marcelo atravessava o parque para retornar para casa.\n" +
+                "\n" +
+                "Segundo seu depoimento, uma sombra incomumente grande surgiu atrás dele.\n" +
+                "\n" +
+                "A princípio acreditou tratar-se da sombra de uma árvore.\n" +
+                "\n" +
+                "Entretanto, percebeu que a figura continuava se movendo mesmo quando ele parou.\n" +
+                "\n" +
+                "Momentos depois a sombra se separou do chão e assumiu forma humanoide.\n" +
+                "\n" +
+                "A entidade avançou contra o jovem.\n" +
+                "\n" +
+                "Marcelo perdeu a consciência.\n" +
+                "\n" +
+                "Quando despertou algumas horas depois, estava sozinho.\n" +
+                "\n" +
+                "Aparentemente não havia sofrido nenhum ferimento.\n" +
+                "\n" +
+                "No entanto, algo estava errado.\n" +
+                "\n" +
+                "Ele não possuía mais sombra.\n" +
+                "\n" +
+                "Independentemente da iluminação ou posição do Sol, nenhuma sombra era projetada por seu corpo.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "MANIFESTAÇÃO DA ENTIDADE\n" +
+                "\n" +
+                "Nos dias seguintes, Marcelo relatou estar sendo perseguido por uma figura escura.\n" +
+                "\n" +
+                "A entidade aparecia em reflexos, superfícies escuras e corredores pouco iluminados.\n" +
+                "\n" +
+                "Inicialmente ninguém acreditou em suas alegações.\n" +
+                "\n" +
+                "Entretanto, amigos e familiares começaram a observar fenômenos semelhantes.\n" +
+                "\n" +
+                "Pouco tempo depois ocorreram os primeiros ataques.\n" +
+                "\n" +
+                "As vítimas relataram ter sido perseguidas por uma sombra viva antes de sofrer agressões físicas severas.\n" +
+                "\n" +
+                "Em todos os casos, a entidade desaparecia antes da chegada das autoridades.\n" +
+                "\n" +
+                "Análises posteriores levaram os pesquisadores à conclusão de que a sombra original de Marcelo havia se tornado uma entidade independente.\n" +
+                "\n" +
+                "Essa entidade recebeu posteriormente a designação ZSP-002.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "DESCOBERTA PELA FUNDAÇÃO\n" +
+                "\n" +
+                "A Fundação ZSP tomou conhecimento do caso após receber relatórios envolvendo múltiplos desaparecimentos associados à mesma região.\n" +
+                "\n" +
+                "Uma equipe de investigação foi enviada ao local.\n" +
+                "\n" +
+                "Durante a análise das câmeras de segurança, agentes observaram uma figura escura movendo-se pelo chão e pelas paredes de maneira incompatível com qualquer fenômeno conhecido.\n" +
+                "\n" +
+                "O comportamento agressivo da entidade tornou-se evidente quando dois investigadores foram atacados durante uma inspeção noturna.\n" +
+                "\n" +
+                "Um deles sofreu ferimentos graves.\n" +
+                "\n" +
+                "O outro desapareceu.\n" +
+                "\n" +
+                "Seu paradeiro permanece desconhecido.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "CAPTURA\n" +
+                "\n" +
+                "A captura ocorreu durante a Operação Sol Artificial.\n" +
+                "\n" +
+                "Pesquisadores descobriram que a entidade apresentava extrema aversão à luz intensa.\n" +
+                "\n" +
+                "Com base nessa informação, uma armadilha foi construída utilizando centenas de refletores industriais.\n" +
+                "\n" +
+                "Marcelo foi colocado sob proteção da Fundação e utilizado como ponto de atração para a entidade.\n" +
+                "\n" +
+                "Quando ZSP-002 surgiu para atacá-lo, todos os refletores foram ativados simultaneamente.\n" +
+                "\n" +
+                "A entidade reagiu de forma extremamente violenta.\n" +
+                "\n" +
+                "Durante quarenta minutos de confronto, destruiu veículos, equipamentos e feriu diversos agentes.\n" +
+                "\n" +
+                "Apesar da resistência apresentada, a ausência de áreas escuras reduziu significativamente suas capacidades.\n" +
+                "\n" +
+                "Após sucessivas tentativas de fuga, ZSP-002 foi finalmente capturado e transferido para a Instalação ZSP-Prime.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "CAPACIDADES ANÔMALAS\n" +
+                "\n" +
+                "Manipulação de Escuridão\n" +
+                "\n" +
+                "A entidade pode controlar áreas escuras próximas.\n" +
+                "\n" +
+                "Deslocamento Sombrio\n" +
+                "\n" +
+                "É capaz de mover-se instantaneamente entre regiões conectadas por sombras.\n" +
+                "\n" +
+                "Materialização de Estruturas\n" +
+                "\n" +
+                "Pode criar garras, lâminas e tentáculos compostos por matéria sombria.\n" +
+                "\n" +
+                "Regeneração Parcial\n" +
+                "\n" +
+                "Danos físicos desaparecem gradualmente quando permanece em ambientes escuros.\n" +
+                "\n" +
+                "Força Sobre-Humana\n" +
+                "\n" +
+                "Capaz de destruir estruturas reforçadas e veículos leves.\n" +
+                "\n" +
+                "Camuflagem Completa\n" +
+                "\n" +
+                "Em locais escuros, torna-se extremamente difícil detectar sua presença.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "COMPORTAMENTO\n" +
+                "\n" +
+                "ZSP-002 apresenta comportamento altamente agressivo.\n" +
+                "\n" +
+                "A entidade demonstra hostilidade extrema contra seres humanos.\n" +
+                "\n" +
+                "Entretanto, seu principal alvo continua sendo Marcelo Vieira.\n" +
+                "\n" +
+                "Pesquisadores acreditam que a entidade considera Marcelo uma espécie de ligação física com sua origem.\n" +
+                "\n" +
+                "Sempre que a oportunidade surge, tenta localizá-lo e eliminá-lo.\n" +
+                "\n" +
+                "Apesar de sua agressividade, ZSP-002 demonstra inteligência considerável.\n" +
+                "\n" +
+                "Registros mostram que a entidade é capaz de planejar emboscadas e explorar falhas de segurança.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "INCIDENTE-002-A\n" +
+                "\n" +
+                "Durante uma manutenção realizada em 2012, uma falha em um dos refletores criou uma pequena área de sombra próxima à parede oeste da câmara.\n" +
+                "\n" +
+                "Sensores registraram atividade anômala imediatamente.\n" +
+                "\n" +
+                "Uma extensão semelhante a um braço humano emergiu da sombra e tentou alcançar um técnico de manutenção.\n" +
+                "\n" +
+                "O sistema de emergência restaurou a iluminação antes que qualquer ferimento fosse registrado.\n" +
+                "\n" +
+                "O incidente resultou na instalação de refletores adicionais.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "AVALIAÇÃO FINAL\n" +
+                "\n" +
+                "ZSP-002 é considerada uma das entidades mais perigosas atualmente contidas pela Fundação ZSP.\n" +
+                "\n" +
+                "Sua capacidade de utilizar escuridão como arma, meio de locomoção e mecanismo de ocultação representa uma ameaça significativa para qualquer instalação.\n" +
+                "\n" +
+                "Embora permaneça contida, pesquisadores concordam que uma falha prolongada nos sistemas de iluminação poderia resultar em uma quebra de contenção de nível catastrófico.\n" +
+                "\n" +
+                "Por esse motivo, a entidade permanece classificada como Keter e sob vigilância permanente.\n" +
+                "\n" +
+                "Nível de ameaça: EXTREMO." },
+        { id: "ZSP-003", name: "A Obediente Imperfeita", class: "Keter", status: "Contido", doc: "PROCEDIMENTOS ESPECIAIS DE CONTENÇÃO\n" +
+                "\n" +
+                "ZSP-003 encontra-se alojada em uma cela humanoide padrão localizada na Ala Keter da Instalação ZSP-Prime.\n" +
+                "\n" +
+                "Nenhum funcionário está autorizado a emitir ordens diretas à entidade.\n" +
+                "\n" +
+                "Toda comunicação deve ser realizada utilizando linguagem indireta, evitando palavras como \"faça\", \"vá\", \"pegue\", \"pare\", \"corra\", \"fique\" ou qualquer outra expressão que possa ser interpretada como comando.\n" +
+                "\n" +
+                "Testes envolvendo instruções verbais exigem autorização de Nível 4.\n" +
+                "\n" +
+                "Em caso de ativação acidental das propriedades anômalas da entidade, a área afetada deve ser evacuada imediatamente.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "DESCRIÇÃO\n" +
+                "\n" +
+                "ZSP-003 é uma adolescente de 15 anos chamada Larissa Mendes.\n" +
+                "\n" +
+                "Fisicamente, a entidade não apresenta diferenças significativas em relação a um ser humano comum.\n" +
+                "\n" +
+                "Entretanto, ZSP-003 manifesta uma anomalia cognitiva extremamente incomum.\n" +
+                "\n" +
+                "Sempre que recebe uma ordem direta que reconhece como comando, a entidade é forçada a tentar executá-la.\n" +
+                "\n" +
+                "Essa compulsão é involuntária e aparentemente impossível de resistir.\n" +
+                "\n" +
+                "Porém existe uma segunda característica anômala.\n" +
+                "\n" +
+                "ZSP-003 jamais consegue concluir uma ordem exatamente da forma como foi solicitada.\n" +
+                "\n" +
+                "Independentemente da simplicidade da tarefa, algum aspecto sempre falha.\n" +
+                "\n" +
+                "Em situações normais isso gera pequenos erros.\n" +
+                "\n" +
+                "Em situações complexas, os resultados podem desafiar as leis da física.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "DESCOBERTA\n" +
+                "\n" +
+                "O caso foi registrado pela Fundação ZSP em 2018.\n" +
+                "\n" +
+                "Professores da escola da entidade relataram acontecimentos impossíveis envolvendo a estudante.\n" +
+                "\n" +
+                "Durante uma aula, um professor ordenou:\n" +
+                "\n" +
+                "\"Escreva seu nome na lousa.\"\n" +
+                "\n" +
+                "Momentos depois, dezenas de nomes apareceram simultaneamente em diferentes partes da sala.\n" +
+                "\n" +
+                "Nenhum deles correspondia exatamente ao nome da entidade.\n" +
+                "\n" +
+                "Dias depois, outro incidente ocorreu.\n" +
+                "\n" +
+                "Ao ouvir a instrução:\n" +
+                "\n" +
+                "\"Feche a janela.\"\n" +
+                "\n" +
+                "A janela foi fechada.\n" +
+                "\n" +
+                "Entretanto, todas as outras janelas do corredor também foram fechadas instantaneamente.\n" +
+                "\n" +
+                "Os relatos chamaram a atenção das autoridades locais e posteriormente da Fundação ZSP.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "CAPTURA\n" +
+                "\n" +
+                "A contenção inicial foi extremamente difícil.\n" +
+                "\n" +
+                "A maioria das equipes desconhecia a natureza da anomalia.\n" +
+                "\n" +
+                "Durante uma tentativa de transporte, um agente ordenou:\n" +
+                "\n" +
+                "\"Entre no veículo.\"\n" +
+                "\n" +
+                "A entidade tentou obedecer.\n" +
+                "\n" +
+                "Como resultado, metade do corpo entrou no veículo enquanto a outra metade permaneceu do lado de fora sem sofrer qualquer dano físico.\n" +
+                "\n" +
+                "O fenômeno gerou uma distorção espacial temporária que destruiu o automóvel.\n" +
+                "\n" +
+                "Após diversos incidentes semelhantes, pesquisadores compreenderam o padrão da anomalia.\n" +
+                "\n" +
+                "A partir desse momento, procedimentos específicos foram desenvolvidos.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "CAPACIDADES ANÔMALAS\n" +
+                "\n" +
+                "Obediência Compulsória\n" +
+                "\n" +
+                "ZSP-003 é forçada a obedecer comandos diretos.\n" +
+                "\n" +
+                "Execução Imperfeita\n" +
+                "\n" +
+                "Nenhuma ordem pode ser realizada corretamente.\n" +
+                "\n" +
+                "Distorções de Realidade\n" +
+                "\n" +
+                "Em situações específicas, a tentativa de obedecer altera propriedades físicas do ambiente.\n" +
+                "\n" +
+                "Manipulação Involuntária\n" +
+                "\n" +
+                "A entidade pode produzir efeitos impossíveis sem intenção consciente.\n" +
+                "\n" +
+                "Imprevisibilidade Elevada\n" +
+                "\n" +
+                "Não existe método conhecido para prever exatamente como uma ordem irá falhar.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "INCIDENTE-003-A\n" +
+                "\n" +
+                "Durante um teste autorizado, um pesquisador instruiu:\n" +
+                "\n" +
+                "\"Empilhe três blocos.\"\n" +
+                "\n" +
+                "A entidade imediatamente tentou obedecer.\n" +
+                "\n" +
+                "Segundos depois, dois blocos foram empilhados normalmente.\n" +
+                "\n" +
+                "O terceiro bloco desapareceu.\n" +
+                "\n" +
+                "Após buscas extensivas, o objeto foi encontrado dentro de um cofre trancado em outro setor da instalação.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "INCIDENTE-003-C\n" +
+                "\n" +
+                "Em 2020, um funcionário recém-contratado ordenou acidentalmente:\n" +
+                "\n" +
+                "\"Fique parada.\"\n" +
+                "\n" +
+                "A entidade permaneceu imóvel.\n" +
+                "\n" +
+                "Entretanto, todos os relógios presentes no prédio interromperam seu funcionamento durante aproximadamente dez minutos.\n" +
+                "\n" +
+                "Quando a anomalia cessou, os relógios voltaram a funcionar normalmente.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "INCIDENTE-003-F\n" +
+                "\n" +
+                "Durante um experimento de alto risco, foi emitida a ordem:\n" +
+                "\n" +
+                "\"Cure seu machucado.\"\n" +
+                "\n" +
+                "A entidade tentou obedecer.\n" +
+                "\n" +
+                "O ferimento desapareceu.\n" +
+                "\n" +
+                "Entretanto, o braço afetado tornou-se temporariamente translúcido durante vinte e quatro horas.\n" +
+                "\n" +
+                "Nenhuma explicação científica foi encontrada.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "COMPORTAMENTO\n" +
+                "\n" +
+                "ZSP-003 apresenta personalidade cooperativa e educada.\n" +
+                "\n" +
+                "A entidade demonstra constante preocupação com os danos que suas habilidades podem causar.\n" +
+                "\n" +
+                "Durante entrevistas, afirmou diversas vezes que prefere permanecer isolada para evitar acidentes.\n" +
+                "\n" +
+                "Apesar de sua natureza não hostil, pesquisadores classificam a entidade como Keter devido ao potencial destrutivo imprevisível de suas propriedades anômalas.\n" +
+                "\n" +
+                "────────────────────────────────────────\n" +
+                "\n" +
+                "AVALIAÇÃO FINAL\n" +
+                "\n" +
+                "ZSP-003 não representa ameaça por intenção própria.\n" +
+                "\n" +
+                "Entretanto, qualquer ordem simples pode desencadear consequências impossíveis de prever.\n" +
+                "\n" +
+                "Simulações realizadas pela Fundação indicam que instruções inadequadas poderiam provocar distorções de realidade em larga escala.\n" +
+                "\n" +
+                "Por esse motivo, ZSP-003 permanece classificada como Keter.\n" +
+                "\n" +
+                "A Fundação ZSP considera a entidade uma das anomalias mais perigosas já registradas não por agressividade, mas pela impossibilidade de controlar os resultados de suas ações." }
+    ];
+
+    function toggleMenu() { document.getElementById('nav-menu').style.display = (document.getElementById('nav-menu').style.display === 'block') ? 'none' : 'block'; }
+
+    function loadHome() {
+        document.getElementById('main-content').innerHTML = `
+            <h1>Fundação ZSP</h1>
+            <p>A Fundação ZSP é uma organização dedicada à contenção, catalogação e estudo de anomalias que desafiam o entendimento científico convencional.</p>
+            <input type="text" placeholder="Pesquisar..." onkeyup="searchZSP(this.value)">
+            <div id="search-results" style="margin-top: 20px;"></div>
+        `;
+    }
+
+    function searchZSP(query) {
+        const resDiv = document.getElementById('search-results');
+        if (!query) { resDiv.innerHTML = ''; return; }
+        const results = zspDatabase.filter(z => (z.id+z.name+z.class+z.status).toLowerCase().includes(query.toLowerCase()));
+        resDiv.innerHTML = results.length ? `<h3>Resultados:</h3>` + results.map(z => `<div class="doc-item" onclick="viewDoc('${z.id}')"><strong>${z.id} - ${z.name}</strong><br><small>Classe: ${z.class} | Status: ${z.status}</small></div>`).join('') : '<p>Nenhum arquivo encontrado.</p>';
+    }
+
+    function viewDoc(id) {
+        const z = zspDatabase.find(x => x.id === id);
+        document.getElementById('main-content').innerHTML = `<h1>${z.id}</h1><p><b>Nome:</b> ${z.name}<br><b>Classe:</b> ${z.class}<br><b>Status:</b> ${z.status}</p><div class="document-area">${z.doc}</div><br><button onclick="loadHome()">Voltar</button>`;
+    }
+
+    function loadArchive() {
+        document.getElementById('main-content').innerHTML = `<h1>Todos os Arquivos</h1>` + zspDatabase.map(z => `<div class="doc-item" onclick="viewDoc('${z.id}')"><strong>${z.id} - ${z.name}</strong></div>`).join('');
+    }
+
+    loadHome();
+</script>
+</body>
+</html>
