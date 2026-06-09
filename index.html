@@ -2,114 +2,53 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Fundação ZSP // Arquivo Público</title>
     <style>
+        * { box-sizing: border-box; }
         :root { --border: #000; --bg: #fff; --text: #000; }
-        body { font-family: 'Georgia', serif; background-color: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+        
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Georgia', serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
         /* Layout */
-        #container { display: flex; flex-direction: row; min-height: 100vh; }
-        nav { width: 250px; border-right: 1px solid var(--border); padding: 40px 20px; flex-shrink: 0; }
-        main { flex-grow: 1; padding: 40px; }
+        #container { display: flex; flex-direction: row; min-height: 100vh; width: 100%; }
+        nav { width: 250px; border-right: 1px solid var(--border); padding: 40px 20px; flex-shrink: 0; background: #fff; }
+        main { flex-grow: 1; padding: 40px; width: 100%; }
 
         /* Mobile */
-        .menu-btn { display: none; font-size: 24px; cursor: pointer; }
+        .menu-btn { display: none; font-size: 24px; cursor: pointer; user-select: none; }
         @media (max-width: 768px) {
             #container { flex-direction: column; }
             nav { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 15px; }
             .nav-menu { display: none; }
-            .menu-btn { display: block; }
+            .menu-btn { display: block; text-align: right; }
+            main { padding: 20px; }
         }
 
-        /* Pesquisa */
-        input[type="text"] { width: 100%; padding: 12px; border: 1px solid #000; font-family: 'Georgia', serif; box-sizing: border-box; }
-
-        .doc-item { padding: 15px 0; border-bottom: 1px solid #eee; cursor: pointer; }
-        .document-area { white-space: pre-wrap; margin-top: 20px; border-top: 1px solid #000; padding-top: 20px; }
-        h1 { font-family: 'Arial', sans-serif; text-transform: uppercase; }
+        /* Elementos */
+        input[type="text"] { width: 100%; max-width: 100%; padding: 12px; border: 1px solid #000; font-family: 'Georgia', serif; }
+        .doc-item { padding: 15px 0; border-bottom: 1px solid #eee; cursor: pointer; word-wrap: break-word; }
+        .document-area { white-space: pre-wrap; margin-top: 20px; border-top: 1px solid #000; padding-top: 20px; word-wrap: break-word; }
+        h1 { font-family: 'Arial', sans-serif; text-transform: uppercase; font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
 <div id="container">
     <nav>
-        <nav>
+        <div style="text-align:center;">
+            <img src="Fundação ZSP.png" alt="Fundação ZSP" style="width:140px; max-width:80%; height:auto; display:block; margin:0 auto 15px auto;">
+            <h2 style="margin:0; font-size:1.2rem; font-family:Arial, sans-serif; text-transform:uppercase; letter-spacing:2px;">FUNDAÇÃO ZSP</h2>
+            <div style="border-bottom:2px solid #000; margin:15px 0 20px 0;"></div>
+        </div>
 
-    <div style="text-align:center;">
+        <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
-        <img src="Fundação ZSP.png"
-             alt="Fundação ZSP"
-             style="
-                width:140px;
-                max-width:80%;
-                height:auto;
-                display:block;
-                margin:0 auto 15px auto;
-             ">
-
-        <h2 style="
-            margin:0;
-            font-size:1.2rem;
-            font-family:Arial, sans-serif;
-            text-transform:uppercase;
-            letter-spacing:2px;
-        ">
-            FUNDAÇÃO ZSP
-        </h2>
-
-        <div style="
-            border-bottom:2px solid #000;
-            margin:15px 0 20px 0;
-        "></div>
-
-    </div>
-
-    <div style="
-        display:flex;
-        justify-content:flex-end;
-        margin-bottom:10px;
-    ">
-        <span class="menu-btn"
-              onclick="toggleMenu()"
-              style="
-                font-size:24px;
-                cursor:pointer;
-                user-select:none;
-              ">
-            ☰
-        </span>
-    </div>
-
-    <div id="nav-menu" class="nav-menu">
-
-        <a href="#"
-           onclick="loadHome()"
-           style="
-                display:block;
-                padding:12px 0;
-                color:#000;
-                text-decoration:none;
-                border-bottom:1px solid #ddd;
-           ">
-            Início
-        </a>
-
-        <a href="#"
-           onclick="loadArchive()"
-           style="
-                display:block;
-                padding:12px 0;
-                color:#000;
-                text-decoration:none;
-                border-bottom:1px solid #ddd;
-           ">
-            Arquivos ZSP
-        </a>
-
-    </div>
-
-</nav>
+        <div id="nav-menu" class="nav-menu">
+            <a href="#" onclick="loadHome(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
+            <a href="#" onclick="loadArchive(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
+        </div>
     </nav>
 
     <main id="main-content"></main>
@@ -117,7 +56,7 @@
 
 <script>
     const zspDatabase = [
-        { id: "ZSP-001", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido", doc: "PROCEDIMENTOS ESPECIAIS DE CONTENÇÃO\n" +
+        { id: "ZSP-001", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido", doc: "ntido", doc: "PROCEDIMENTOS ESPECIAIS DE CONTENÇÃO\n" +
                 "\n" +
                 "ZSP-001 encontra-se atualmente contido na Câmara Euclid-01 da Instalação ZSP-Prime. A câmara possui formato cilíndrico com 20 metros de diâmetro e 12 metros de altura.\n" +
                 "\n" +
@@ -688,7 +627,10 @@
                 "A Fundação ZSP considera a entidade uma das anomalias mais perigosas já registradas não por agressividade, mas pela impossibilidade de controlar os resultados de suas ações." }
     ];
 
-    function toggleMenu() { document.getElementById('nav-menu').style.display = (document.getElementById('nav-menu').style.display === 'block') ? 'none' : 'block'; }
+    function toggleMenu() {
+        const m = document.getElementById('nav-menu');
+        if (window.innerWidth <= 768) m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+    }
 
     function loadHome() {
         document.getElementById('main-content').innerHTML = `
@@ -699,11 +641,11 @@
         `;
     }
 
-    function searchZSP(query) {
+    function searchZSP(q) {
         const resDiv = document.getElementById('search-results');
-        if (!query) { resDiv.innerHTML = ''; return; }
-        const results = zspDatabase.filter(z => (z.id+z.name+z.class+z.status).toLowerCase().includes(query.toLowerCase()));
-        resDiv.innerHTML = results.length ? `<h3>Resultados:</h3>` + results.map(z => `<div class="doc-item" onclick="viewDoc('${z.id}')"><strong>${z.id} - ${z.name}</strong><br><small>Classe: ${z.class} | Status: ${z.status}</small></div>`).join('') : '<p>Nenhum arquivo encontrado.</p>';
+        if (!q.trim()) { resDiv.innerHTML = ''; return; }
+        const res = zspDatabase.filter(z => (z.id+z.name+z.class+z.status).toLowerCase().includes(q.toLowerCase()));
+        resDiv.innerHTML = res.length ? `<h3>Resultados:</h3>` + res.map(z => `<div class="doc-item" onclick="viewDoc('${z.id}')"><strong>${z.id} - ${z.name}</strong><br><small>Classe: ${z.class} | Status: ${z.status}</small></div>`).join('') : '<p>Nenhum arquivo encontrado.</p>';
     }
 
     function viewDoc(id) {
