@@ -39,20 +39,26 @@
         </div>
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
         <div id="nav-menu" class="nav-menu">
-            <a href="#" onclick="loadHome(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
-            <a href="#" onclick="loadArchive(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
+            <a href="javascript:void(0)" onclick="loadHome(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
+            <a href="javascript:void(0)" onclick="loadArchive(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
         </div>
     </nav>
     <main id="main-content"></main>
 </div>
 
 <script>
+    // Truque para esconder o .html da barra de pesquisa (endereços)
+    if (window.location.pathname.endsWith('.html')) {
+        window.history.replaceState(null, '', window.location.pathname.replace('.html', ''));
+    }
+
+    // Banco de dados automático usando apenas o ID
     const zspDatabase = [
         { id: "ZSP-001", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido" },
-        { id: "ZSP-002", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido" },
-        { id: "ZSP-003", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido" },
-        { id: "ZSP-004", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido" },
-        { id: "ZSP-005", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido" }
+        { id: "ZSP-002", name: "O Tecelão de Sombras", class: "Keter", status: "Contido" },
+        { id: "ZSP-003", name: "O Tecelão de Sombras", class: "Keter", status: "Contido" },
+        { id: "ZSP-004", name: "O Tecelão de Sombras", class: "Keter", status: "Contido" },
+        { id: "ZSP-005", name: "█████████████████", class: "Keter", status: "Contido" }
     ];
 
     function toggleMenu() {
@@ -73,10 +79,13 @@
         const resDiv = document.getElementById('search-results');
         if (!q.trim()) { resDiv.innerHTML = ''; return; }
         const res = zspDatabase.filter(z => (z.id+z.name+z.class+z.status).toLowerCase().includes(q.toLowerCase()));
+
+        // Adiciona o .html automaticamente ao clicar
         resDiv.innerHTML = res.length ? `<h3>Resultados:</h3>` + res.map(z => `<div class="doc-item" onclick="window.location.href='${z.id}.html'"><strong>${z.id} - ${z.name}</strong><br><small>Classe: ${z.class} | Status: ${z.status}</small></div>`).join('') : '<p>Nenhum arquivo encontrado.</p>';
     }
 
     function loadArchive() {
+        // Adiciona o .html automaticamente ao clicar
         document.getElementById('main-content').innerHTML = `<h1>Todos os Arquivos</h1>` + zspDatabase.map(z => `<div class="doc-item" onclick="window.location.href='${z.id}.html'"><strong>${z.id} - ${z.name}</strong></div>`).join('');
     }
 
