@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>ZSP-001</title>
+    <title>ZSP-001 // Arquivo Público</title>
     <link rel="icon" type="image/png" href="Fundação ZSP.png">
     <style>
         * { box-sizing: border-box; }
@@ -229,6 +229,11 @@ Monitoramento permanente é obrigatório.</div>
 </div>
 
 <script>
+    // Truque para esconder o .html da barra de pesquisa (endereços) nesta página também
+    if (window.location.pathname.endsWith('.html')) {
+        window.history.replaceState(null, '', window.location.pathname.replace('.html', ''));
+    }
+
     function toggleMenu() {
         const m = document.getElementById('nav-menu');
         if (window.innerWidth <= 768) m.style.display = (m.style.display === 'block') ? 'none' : 'block';
