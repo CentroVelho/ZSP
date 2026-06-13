@@ -36,8 +36,8 @@
         </div>
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
         <div id="nav-menu" class="nav-menu">
-            <a href="index.html" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
-            <a href="index.html" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
+            <a href="index.html#inicio" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
+            <a href="index.html#arquivos" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
         </div>
     </nav>
 
@@ -209,16 +209,18 @@ ZSP-005 não pode ser descrito de forma consistente por observadores humanos.
 A entidade não parece destruir informação, mas impedir sua retenção semântica completa.
 
 A Fundação ZSP mantém ZSP-005 sob contenção cognitiva e monitora possíveis efeitos de degradação informacional em escala institucional.
+
 </div>
         <br>
-        <button onclick="window.location.href='index.html'">Voltar</button>
+        <button onclick="window.location.href='index.html#arquivos'" style="padding: 10px 20px; cursor: pointer; background: #cc0000; color: #fff; border: none; font-weight: bold; border-radius: 4px;">Voltar aos Arquivos</button>
     </main>
 </div>
 
 <script>
-    // Truque para esconder o .html da barra de pesquisa (endereços) nesta página também
+    // Truque para esconder o .html preservando a hashtag
     if (window.location.pathname.endsWith('.html')) {
-        window.history.replaceState(null, '', window.location.pathname.replace('.html', ''));
+        let urlLimpa = window.location.pathname.replace('.html', '') + window.location.search + window.location.hash;
+        window.history.replaceState(null, '', urlLimpa);
     }
 
     function toggleMenu() {

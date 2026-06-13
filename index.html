@@ -39,20 +39,21 @@
         </div>
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
         <div id="nav-menu" class="nav-menu">
-            <a href="javascript:void(0)" onclick="loadHome(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
-            <a href="javascript:void(0)" onclick="loadArchive(); toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
+            <a href="#inicio" onclick="toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Início</a>
+            <a href="#arquivos" onclick="toggleMenu()" style="display:block; padding:12px 0; color:#000; text-decoration:none; border-bottom:1px solid #ddd;">Arquivos ZSP</a>
         </div>
     </nav>
     <main id="main-content"></main>
 </div>
 
 <script>
-    // Truque para esconder o .html da barra de pesquisa (endereços)
-    if (window.location.pathname.endsWith('.html')) {
-        window.history.replaceState(null, '', window.location.pathname.replace('.html', ''));
+    // Truque para esconder o .html da barra de pesquisa, mantendo a hashtag (#) se existir
+    if (window.location.pathname.endsWith('.html') && !window.location.pathname.endsWith('index.html')) {
+        let urlLimpa = window.location.pathname.replace('.html', '') + window.location.search + window.location.hash;
+        window.history.replaceState(null, '', urlLimpa);
     }
 
-    // Banco de dados automático usando apenas o ID
+    // Banco de dados automático
     const zspDatabase = [
         { id: "ZSP-001", name: "O Tecelão de Sombras", class: "Euclid", status: "Contido" },
         { id: "ZSP-002", name: "A Sombra Agressiva", class: "Keter", status: "Contido" },
@@ -80,16 +81,25 @@
         if (!q.trim()) { resDiv.innerHTML = ''; return; }
         const res = zspDatabase.filter(z => (z.id+z.name+z.class+z.status).toLowerCase().includes(q.toLowerCase()));
 
-        // Adiciona o .html automaticamente ao clicar
         resDiv.innerHTML = res.length ? `<h3>Resultados:</h3>` + res.map(z => `<div class="doc-item" onclick="window.location.href='${z.id}.html'"><strong>${z.id} - ${z.name}</strong><br><small>Classe: ${z.class} | Status: ${z.status}</small></div>`).join('') : '<p>Nenhum arquivo encontrado.</p>';
     }
 
     function loadArchive() {
-        // Adiciona o .html automaticamente ao clicar
         document.getElementById('main-content').innerHTML = `<h1>Todos os Arquivos</h1>` + zspDatabase.map(z => `<div class="doc-item" onclick="window.location.href='${z.id}.html'"><strong>${z.id} - ${z.name}</strong></div>`).join('');
     }
 
-    loadHome();
+    // Lógica para verificar o que deve ser carregado com base na URL
+    function checkURL() {
+        if (window.location.hash === '#arquivos') {
+            loadArchive();
+        } else {
+            loadHome();
+        }
+    }
+
+    // Executa ao carregar a página e sempre que a hashtag (#) mudar
+    window.addEventListener('hashchange', checkURL);
+    checkURL();
 </script>
 </body>
 </html>
